@@ -1,11 +1,12 @@
-use super::Token::*;
-use crate::tokenizer::Token;
-use crate::util::*;
-use nom::IResult;
 use nom::{
     bytes::complete::{tag, take_while},
-    error::{ParseError, VerboseError},
+    error::VerboseError,
+    IResult,
 };
+
+use crate::tokenizer::Token;
+
+use super::Token::*;
 
 fn ws(i: &str) -> IResult<&str, &str, VerboseError<&str>> {
     let chars = " \t\r\n";
@@ -24,12 +25,7 @@ fn right_paren(i: &str) -> IResult<&str, Token, VerboseError<&str>> {
 
 #[cfg(test)]
 mod tests {
-
     use super::*;
-    use crate::tokenizer::Token::*;
-    use nom::error::convert_error;
-    use nom::Err;
-    use nom::Err::Incomplete;
 
     #[test]
     fn ws_t() {
