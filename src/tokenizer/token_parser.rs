@@ -74,11 +74,11 @@ pub fn lower_id(i: &str) -> IResult<&str, Token, VerboseError<&str>> {
     })(i)
 }
 
-pub fn identifier(i: &str) -> IResult<&str, Token, VerboseError<&str>> {
+pub fn identifier(i: &str) -> IResult<&str, String, VerboseError<&str>> {
     let first = alt((lower, upper, one_of("_")));
     let id = tuple((first, many0(id_char)));
 
-    map(id, |r| Token::Identifier(concat_char_remaining(r)))(i)
+    map(id, |r| concat_char_remaining(r))(i)
 }
 
 fn concat_char_remaining((fst_char, remaining): (char, Vec<char>)) -> String {
@@ -98,7 +98,8 @@ mod tests {
     #[test]
     fn identifier_t() {
         let result = identifier("_12sA");
-        assert_ok!(result, Token::Identifier("_12sA".to_string()))
+//        assert_ok!(result, Token::Identifier("_12sA".to_string()))
+        assert_ok!(result, "_12sA".to_string())
     }
 
     #[test]
